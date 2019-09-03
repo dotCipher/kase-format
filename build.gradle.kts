@@ -1,5 +1,14 @@
+import groovy.lang.Closure
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
 plugins {
     kotlin("multiplatform") version "1.3.50"
+    id("com.palantir.git-version") version "0.12.0-rc2"
 }
 
 repositories {
@@ -7,9 +16,11 @@ repositories {
 }
 
 group = "io.dotcipher.kase"
-//version '0.0.1'
+// Use explicit cast for groovy call (see https://github.com/palantir/gradle-git-version/issues/105)
+version = (extensions.extraProperties.get("gitVersion") as? Closure<*>)?.call() ?: "dirty"
 
 //apply plugin: 'maven-publish'
+
 
 kotlin {
     jvm()
@@ -20,10 +31,6 @@ kotlin {
         }
     }
     macosX64()
-    iosArm32()
-    iosArm64()
-    linuxX64()
-    mingwX64()
     sourceSets {
         val commonMain by getting {
             dependencies {
