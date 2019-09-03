@@ -5,18 +5,18 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-class KaseTests {
+class KaseFormatTests {
 
-    private fun assertKase(input: String, format: KaseFormat) {
+    private fun assertKaseFormat(input: String, format: KaseFormat) {
         val output = KaseFormat.determine(input)
         assertNotNull(output, "$input cannot be determined (expected $format)") {
             assertEquals(output, format, "$input is determined as $output (expected $format)")
         }
     }
 
-    private fun assertKase(inputs: List<String>, format: KaseFormat) {
+    private fun assertKaseFormat(inputs: List<String>, format: KaseFormat) {
         inputs.forEach {
-            assertKase(it, format)
+            assertKaseFormat(it, format)
         }
     }
 
@@ -55,7 +55,7 @@ class KaseTests {
             "-abc",
             "123-abc-rew-34-whatever"
         )
-        assertKase(inputs, KaseFormat.LOWER_HYPHEN)
+        assertKaseFormat(inputs, KaseFormat.LOWER_HYPHEN)
     }
 
     @Test
@@ -66,7 +66,7 @@ class KaseTests {
             "-Ab",
             "Whatever-Something-Else"
         )
-        assertKase(inputs, KaseFormat.CAPITAL_HYPHEN)
+        assertKaseFormat(inputs, KaseFormat.CAPITAL_HYPHEN)
     }
 
     @Test
@@ -78,7 +78,7 @@ class KaseTests {
             "-A",
             "ABC-DEF"
         )
-        assertKase(inputs, KaseFormat.UPPER_HYPHEN)
+        assertKaseFormat(inputs, KaseFormat.UPPER_HYPHEN)
 
     }
 
@@ -90,7 +90,7 @@ class KaseTests {
             "_abc",
             "something_blah_123_other_stuff"
         )
-        assertKase(inputs, KaseFormat.LOWER_UNDERSCORE)
+        assertKaseFormat(inputs, KaseFormat.LOWER_UNDERSCORE)
     }
 
     @Test
@@ -101,7 +101,7 @@ class KaseTests {
             "_Ab",
             "Something_Else_With_Words"
         )
-        assertKase(inputs, KaseFormat.CAPITAL_UNDERSCORE)
+        assertKaseFormat(inputs, KaseFormat.CAPITAL_UNDERSCORE)
     }
 
     @Test
@@ -112,7 +112,7 @@ class KaseTests {
             "ABC_DEF",
             "123_ABC_WITH_THINGS"
         )
-        assertKase(inputs, KaseFormat.UPPER_UNDERSCORE)
+        assertKaseFormat(inputs, KaseFormat.UPPER_UNDERSCORE)
     }
 
     @Test
@@ -124,7 +124,7 @@ class KaseTests {
             "123somethingElse",
             "some123thingNumbered"
         )
-        assertKase(inputs, KaseFormat.LOWER_CAMEL)
+        assertKaseFormat(inputs, KaseFormat.LOWER_CAMEL)
     }
 
     @Test
@@ -135,7 +135,7 @@ class KaseTests {
             "ItWorks",
             "Hopefully"
         )
-        assertKase(inputs, KaseFormat.CAPITAL_CAMEL)
+        assertKaseFormat(inputs, KaseFormat.CAPITAL_CAMEL)
     }
 
 }
