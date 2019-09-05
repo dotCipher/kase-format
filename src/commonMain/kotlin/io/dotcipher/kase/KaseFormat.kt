@@ -14,7 +14,7 @@ enum class KaseFormat(
         override val absentTokens: Set<CharToken> = setOf(
             CharToken.UNDERSCORE,
             CharToken.SPACE,
-            CharToken.OTHER_SPECIALS
+            CharToken.OTHER_SPECIAL
         )
         override val matchMaxSequentialUppercase: (Int) -> Boolean = {
             // There should be no uppercase characters
@@ -22,7 +22,7 @@ enum class KaseFormat(
         }
         override val shouldStartWith: CharToken = CharToken.LOWERCASE_LETTER
         override val shouldStartWithIgnore: Set<CharToken> = setOf(
-            CharToken.NUMBERS,
+            CharToken.NUMBER,
             CharToken.HYPHEN
         )
 
@@ -39,7 +39,7 @@ enum class KaseFormat(
         override val absentTokens: Set<CharToken> = setOf(
             CharToken.UNDERSCORE,
             CharToken.SPACE,
-            CharToken.OTHER_SPECIALS
+            CharToken.OTHER_SPECIAL
         )
         override val matchMaxSequentialUppercase: (Int) -> Boolean = {
             // There should be uppercased characters, and they should be isolated
@@ -48,7 +48,7 @@ enum class KaseFormat(
         override val shouldStartWith: CharToken = CharToken.UPPERCASE_LETTER
         // Ignore prefixed numbers or hyphen when checking `shouldStartWith`
         override val shouldStartWithIgnore: Set<CharToken> = setOf(
-            CharToken.NUMBERS,
+            CharToken.NUMBER,
             CharToken.HYPHEN
         )
 
@@ -65,7 +65,7 @@ enum class KaseFormat(
             CharToken.LOWERCASE_LETTER,
             CharToken.UNDERSCORE,
             CharToken.SPACE,
-            CharToken.OTHER_SPECIALS
+            CharToken.OTHER_SPECIAL
         )
         override val matchMaxSequentialUppercase: (Int) -> Boolean = {
             // Match all circumstances, since we restrict on lower case letters already
@@ -73,7 +73,7 @@ enum class KaseFormat(
         }
         override val shouldStartWith: CharToken = CharToken.UPPERCASE_LETTER
         override val shouldStartWithIgnore: Set<CharToken> = setOf(
-            CharToken.NUMBERS,
+            CharToken.NUMBER,
             CharToken.HYPHEN
         )
 
@@ -89,7 +89,7 @@ enum class KaseFormat(
         override val absentTokens: Set<CharToken> = setOf(
             CharToken.HYPHEN,
             CharToken.SPACE,
-            CharToken.OTHER_SPECIALS
+            CharToken.OTHER_SPECIAL
         )
         override val matchMaxSequentialUppercase: (Int) -> Boolean = {
             // There should be no uppercase characters
@@ -97,7 +97,7 @@ enum class KaseFormat(
         }
         override val shouldStartWith: CharToken = CharToken.LOWERCASE_LETTER
         override val shouldStartWithIgnore: Set<CharToken> = setOf(
-            CharToken.NUMBERS,
+            CharToken.NUMBER,
             CharToken.UNDERSCORE
         )
 
@@ -114,7 +114,7 @@ enum class KaseFormat(
         override val absentTokens: Set<CharToken> = setOf(
             CharToken.HYPHEN,
             CharToken.SPACE,
-            CharToken.OTHER_SPECIALS
+            CharToken.OTHER_SPECIAL
         )
         override val matchMaxSequentialUppercase: (Int) -> Boolean = {
             // There should be uppercased characters, and they should be isolated
@@ -122,7 +122,7 @@ enum class KaseFormat(
         }
         override val shouldStartWith: CharToken = CharToken.UPPERCASE_LETTER
         override val shouldStartWithIgnore: Set<CharToken> = setOf(
-            CharToken.NUMBERS,
+            CharToken.NUMBER,
             CharToken.UNDERSCORE
         )
 
@@ -139,7 +139,7 @@ enum class KaseFormat(
             CharToken.LOWERCASE_LETTER,
             CharToken.HYPHEN,
             CharToken.SPACE,
-            CharToken.OTHER_SPECIALS
+            CharToken.OTHER_SPECIAL
         )
         override val matchMaxSequentialUppercase: (Int) -> Boolean = {
             // Match all circumstances, since we restrict on lower case letters already
@@ -147,7 +147,7 @@ enum class KaseFormat(
         }
         override val shouldStartWith: CharToken = CharToken.UPPERCASE_LETTER
         override val shouldStartWithIgnore: Set<CharToken> = setOf(
-            CharToken.NUMBERS,
+            CharToken.NUMBER,
             CharToken.UNDERSCORE
         )
 
@@ -163,7 +163,7 @@ enum class KaseFormat(
             CharToken.UNDERSCORE,
             CharToken.HYPHEN,
             CharToken.SPACE,
-            CharToken.OTHER_SPECIALS
+            CharToken.OTHER_SPECIAL
         )
         override val matchMaxSequentialUppercase: (Int) -> Boolean = {
             // There could be uppercased characters, but they should be isolated
@@ -171,7 +171,7 @@ enum class KaseFormat(
         }
         override val shouldStartWith: CharToken = CharToken.LOWERCASE_LETTER
         override val shouldStartWithIgnore: Set<CharToken> = setOf(
-            CharToken.NUMBERS
+            CharToken.NUMBER
         )
 
         override fun normalizeWord(word: String, wordIndex: Int): String =
@@ -191,13 +191,16 @@ enum class KaseFormat(
             CharToken.UNDERSCORE,
             CharToken.HYPHEN,
             CharToken.SPACE,
-            CharToken.OTHER_SPECIALS
+            CharToken.OTHER_SPECIAL
         )
         override val matchMaxSequentialUppercase: (Int) -> Boolean = {
             // There should be uppercased characters, and they should be isolated
             it == 1
         }
         override val shouldStartWith: CharToken = CharToken.UPPERCASE_LETTER
+        override val shouldStartWithIgnore: Set<CharToken> = setOf(
+            CharToken.NUMBER
+        )
         override fun normalizeWord(word: String, wordIndex: Int): String = word.capitalize()
     };
 

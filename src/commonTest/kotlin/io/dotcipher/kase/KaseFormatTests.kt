@@ -133,7 +133,8 @@ class KaseFormatTests {
             "EasyPeasy",
             "123SomethingElse",
             "ItWorks",
-            "Hopefully"
+            "Hopefully",
+            "Should123AlsoWork456"
         )
         assertKaseFormat(inputs, KaseFormat.CAPITAL_CAMEL)
     }

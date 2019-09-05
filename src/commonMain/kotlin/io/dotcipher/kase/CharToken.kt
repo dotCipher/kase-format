@@ -5,9 +5,9 @@ enum class CharToken(private val charRanges: Set<CharRange>) {
     UNDERSCORE('_'..'_'),
     UPPERCASE_LETTER('A'..'Z'),
     LOWERCASE_LETTER('a'..'z'),
-    NUMBERS('0'..'9'),
+    NUMBER('0'..'9'),
     SPACE(' '..' '),
-    OTHER_SPECIALS(
+    OTHER_SPECIAL(
         '!'..',',
         '.'..'/',
         ':'..'@',
