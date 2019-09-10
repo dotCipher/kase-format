@@ -1,0 +1,68 @@
+# YAML Aliases / Anchors
+aliases:
+  - &image-build
+    - image: zenika/docker-kotlin
+
+  - &attach-workspace
+    at: '/root/project'
+
+  - &persist-workspace
+    root: '/root/project'
+    paths: [ . ]
+
+  - &key-gradle-wrapper-cache
+    key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+  - &key-gradle-cache
+    key: v1-gradle-cache-{{ checksum "versions.props" }}
+
+  - &restore-gradle-wrapper-cache
+    name: Restore gradle wrapper cache
+    <<: *key-gradle-wrapper-cache
+
+  - &restore-gradle-cache
+    name: Restore gradle cache
+    <<: *key-gradle-cache
+
+  - &save-gradle-wrapper-cache
+    name: Save gradle wrapper cache
+    paths: [ ~/.gradle/wrapper ]
+    <<: *key-gradle-wrapper-cache
+
+  - &save-gradle-cache
+    name: Save gradle cache
+    paths: [ ~/.gradle/caches ]
+    <<: *key-gradle-cache
+
+# Core CircleCI Build Specification
+version: 2.1
+
+executors:
+  build-executor:
+    docker: *image-build
+    working_directory: /root/project
+
+jobs:
+  build:
+    docker:
+      - image: zenika/docker-kotlin
+
+    steps:
+      - checkout
+      - restore_cache: *restore-gradle-wrapper-cache
+      - restore_cache: *restore-gradle-cache
+      - run:
+          name: Compile all dependencies and test all modules
+          command: ./gradlew --no-daemon --parallel --stacktrace --max-workers=4 test check
+      - run:
+          name: Run unit tests and checks
+          command: ./gradlew --no-daemon --parallel --stacktrace --max-workers=4 test check
+      - run:
+          name: Retrieve all test and check results
+          command: mkdir -p ~/junit && find . -type f -regex ".*/build/.*TEST.*xml" -exec cp --parents {} ~/junit/ \;
+          when: always
+      - store_test_results: { path: ~/junit }
+      - store_artifacts: { path: ~/artifacts }
+      - save_cache: *save-gradle-wrapper-cache
+      - save_cache: *save-gradle-cache
+      - persist_to_workspace: *persist-workspace
