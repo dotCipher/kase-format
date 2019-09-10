@@ -66,3 +66,13 @@ jobs:
       - save_cache: *save-gradle-wrapper-cache
       - save_cache: *save-gradle-cache
       - persist_to_workspace: *persist-workspace
+
+  publish:
+    executor: build-executor
+    steps:
+      - attach_workspace: *attach-workspace
+      - restore_cache: *restore-gradle-wrapper-cache
+      - restore_cache: *restore-gradle-cache
+      - run:
+          name: Publish artifacts to Bintray
+          command: ./gradlew --no-daemon --parallel --stacktrace bintrayUpload
