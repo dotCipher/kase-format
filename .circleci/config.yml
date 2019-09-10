@@ -1,7 +1,7 @@
 # YAML Aliases / Anchors
 aliases:
   - &image-build
-    - image: zenika/docker-kotlin
+    - image: zenika/docker-kotlin:1.3-jdk8-alpine
 
   - &filter-only-tags
     filters:
@@ -56,9 +56,7 @@ executors:
 
 jobs:
   build:
-    docker:
-      - image: zenika/docker-kotlin
-
+    executor: build-executor
     steps:
       - checkout
       - restore_cache: *restore-gradle-wrapper-cache
