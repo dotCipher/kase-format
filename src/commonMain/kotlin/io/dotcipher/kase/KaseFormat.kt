@@ -204,6 +204,9 @@ enum class KaseFormat(
             it >= 1
         }
         override val shouldStartWith: CharToken = CharToken.UPPERCASE_LETTER
+        override val shouldStartWithIgnore: Set<CharToken> = setOf(
+            CharToken.NUMBER
+        )
         override fun normalizeWord(word: String, wordIndex: Int): String {
             return when {
                 word.isEmpty() -> word
