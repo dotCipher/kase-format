@@ -63,10 +63,7 @@ jobs:
       - restore_cache: *restore-gradle-cache
       - run:
           name: Compile all dependencies and test all modules
-          command: ./gradlew --no-daemon --parallel --stacktrace --max-workers=4 test check
-      - run:
-          name: Run unit tests and checks
-          command: ./gradlew --no-daemon --parallel --stacktrace --max-workers=4 test check
+          command: ./gradlew --no-daemon --parallel --stacktrace --max-workers=4 check
       - run:
           name: Retrieve all test and check results
           command: mkdir -p ~/junit && find . -type f -regex ".*/build/.*TEST.*xml" -exec cp --parents {} ~/junit/ \;
