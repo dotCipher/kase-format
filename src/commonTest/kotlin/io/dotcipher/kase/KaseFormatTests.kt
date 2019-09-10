@@ -7,6 +7,42 @@ import kotlin.test.assertNull
 
 class KaseFormatTests {
 
+    private fun assertKaseConvert(
+        inputsToOutputs: Map<String, String>,
+        inputFormat: KaseFormat,
+        outputFormat: KaseFormat
+    ) {
+        inputsToOutputs.forEach {
+            assertKaseConvert(it.key, inputFormat, it.value, outputFormat)
+        }
+    }
+
+    private fun assertKaseConvert(
+        input: String,
+        inputFormat: KaseFormat,
+        expectedOutput: String,
+        expectedOutputFormat: KaseFormat
+    ) {
+        // Check formats first
+        assertKaseFormat(input, inputFormat)
+        assertKaseFormat(expectedOutput, expectedOutputFormat)
+        // Then the conversion outputs (don't check bidirectional, since they can be diff)
+        val biDirectionalConverter = expectedOutputFormat.converter(inputFormat)
+        val convertOutput = biDirectionalConverter.convert(input)
+        assertEquals(
+            expectedOutput, convertOutput,
+            "Converted output '$convertOutput' should equal expected output '$expectedOutput'"
+        )
+        // Also check cases of converted outputs to be sure
+        assertKaseFormat(convertOutput, expectedOutputFormat)
+        // Then finally verify dynamic conversion
+        val dynamicConvertOutput = expectedOutputFormat.converter().convert(input)
+        assertEquals(
+            expectedOutput, dynamicConvertOutput,
+            "Dynamically converted output '$dynamicConvertOutput' should equal expected output '$expectedOutput'"
+        )
+    }
+
     private fun assertKaseFormat(input: String, format: KaseFormat) {
         val output = KaseFormat.determine(input)
         assertNotNull(output, "$input cannot be determined (expected $format)") {
@@ -22,26 +58,7 @@ class KaseFormatTests {
 
     @Test
     fun testDetermine_Unknown() {
-        val inputs = listOf(
-            "abc-abc_abc",
-            "ABC_abc",
-            "",
-            "-_",
-            "!",
-            "ABC-abc",
-            "ABC",
-            "[]",
-            " ",
-            "A B C",
-            // Acronym words aren't supported
-            "SomeJSONAcronym",
-            "XMLThing",
-            // Other special characters should show as unknown
-            "MaybeThough?",
-            " Nope",
-            "-not&this-either"
-            )
-        inputs.forEach {
+        INPUTS_UNKNOWN.forEach {
             val format = KaseFormat.determine(it)
             assertNull(format, "$it is determined as $format")
         }
@@ -49,94 +66,148 @@ class KaseFormatTests {
 
     @Test
     fun testDetermine_LowerHyphen() {
-        val inputs = listOf(
-            "a-",
-            "a-b",
-            "-abc",
-            "123-abc-rew-34-whatever"
-        )
-        assertKaseFormat(inputs, KaseFormat.LOWER_HYPHEN)
+        assertKaseFormat(INPUTS_LOWER_HYPHEN, KaseFormat.LOWER_HYPHEN)
     }
 
     @Test
     fun testDetermine_CapitalHyphen() {
-        val inputs = listOf(
-            "Ab-Ab",
-            "Ac-",
-            "-Ab",
-            "Whatever-Something-Else"
-        )
-        assertKaseFormat(inputs, KaseFormat.CAPITAL_HYPHEN)
+        assertKaseFormat(INPUTS_CAPITAL_HYPHEN, KaseFormat.CAPITAL_HYPHEN)
     }
 
     @Test
     fun testDetermine_UpperHyphen() {
-        val inputs = listOf(
-            "A-B",
-            "A-B-C",
-            "A-",
-            "-A",
-            "ABC-DEF"
-        )
-        assertKaseFormat(inputs, KaseFormat.UPPER_HYPHEN)
-
+        assertKaseFormat(INPUTS_UPPER_HYPHEN, KaseFormat.UPPER_HYPHEN)
     }
 
     @Test
     fun testDetermine_LowerUnderscore() {
-        val inputs = listOf(
-            "a_",
-            "a_b",
-            "_abc",
-            "something_blah_123_other_stuff"
-        )
-        assertKaseFormat(inputs, KaseFormat.LOWER_UNDERSCORE)
+        assertKaseFormat(INPUTS_LOWER_UNDERSCORE, KaseFormat.LOWER_UNDERSCORE)
     }
 
     @Test
     fun testDetermine_CapitalUnderscore() {
-        val inputs = listOf(
-            "Ab_Ab",
-            "Ac_",
-            "_Ab",
-            "Something_Else_With_Words"
-        )
-        assertKaseFormat(inputs, KaseFormat.CAPITAL_UNDERSCORE)
+        assertKaseFormat(INPUTS_CAPITAL_UNDERSCORE, KaseFormat.CAPITAL_UNDERSCORE)
     }
 
     @Test
     fun testDetermine_UpperUnderscore() {
-        val inputs = listOf(
-            "A_",
-            "_A",
-            "ABC_DEF",
-            "123_ABC_WITH_THINGS"
-        )
-        assertKaseFormat(inputs, KaseFormat.UPPER_UNDERSCORE)
+        assertKaseFormat(INPUTS_UPPER_UNDERSCORE, KaseFormat.UPPER_UNDERSCORE)
     }
 
     @Test
     fun testDetermine_LowerCamel() {
-        val inputs = listOf(
+        assertKaseFormat(INPUTS_LOWER_CAMEL, KaseFormat.LOWER_CAMEL)
+    }
+
+    @Test
+    fun testDetermine_CapitalCamel() {
+        assertKaseFormat(INPUTS_CAPITAL_CAMEL, KaseFormat.CAPITAL_CAMEL)
+    }
+
+    @Test
+    fun testConvert_CapitalCamelToLowerCamel() {
+        assertKaseConvert(INPUTS_CAPITAL_CAMEL_TO_LOWER_CAMEL,
+            KaseFormat.CAPITAL_CAMEL, KaseFormat.LOWER_CAMEL)
+    }
+
+    @Test
+    fun testConvert_LowerCamelToCapitalCamel() {
+        assertKaseConvert(INPUTS_LOWER_CAMEL_TO_CAPITAL_CAMEL,
+            KaseFormat.LOWER_CAMEL, KaseFormat.CAPITAL_CAMEL)
+    }
+
+    companion object {
+        val INPUTS_CAPITAL_CAMEL = listOf(
+            "EasyPeasy",
+            "123SomethingElse",
+            "ItWorks",
+            "Hopefully",
+            "Should123AlsoWork456",
+            // Acronym words should also be supported
+            "SomeJSONAcronym",
+            "XMLThing"
+        )
+        val INPUTS_CAPITAL_CAMEL_TO_LOWER_CAMEL = mapOf(
+            "XMLThing" to "xmlThing",
+            "SomeJSONAcronym" to "someJsonAcronym",
+            "Hopefully" to "hopefully",
+            "ItWorks" to "itWorks"
+        )
+
+        val INPUTS_LOWER_CAMEL = listOf(
             "abcSomethingElse",
             "with123Numbers",
             "what",
             "123somethingElse",
             "some123thingNumbered"
         )
-        assertKaseFormat(inputs, KaseFormat.LOWER_CAMEL)
-    }
-
-    @Test
-    fun testDetermine_CapitalCamel() {
-        val inputs = listOf(
-            "EasyPeasy",
-            "123SomethingElse",
-            "ItWorks",
-            "Hopefully",
-            "Should123AlsoWork456"
+        val INPUTS_LOWER_CAMEL_TO_CAPITAL_CAMEL = mapOf(
+            "abcSomethingElse" to "AbcSomethingElse",
+            "with123Numbers" to "With123Numbers",
+            "what" to "What",
+            "some123thingNumbered" to "Some123thingNumbered"
         )
-        assertKaseFormat(inputs, KaseFormat.CAPITAL_CAMEL)
+
+        val INPUTS_UPPER_UNDERSCORE = listOf(
+            "A_",
+            "_A",
+            "ABC_DEF",
+            "123_ABC_WITH_THINGS",
+            "ABC"
+        )
+
+        val INPUTS_CAPITAL_UNDERSCORE = listOf(
+            "Ab_Ab",
+            "Ac_",
+            "_Ab",
+            "Something_Else_With_Words"
+        )
+
+        val INPUTS_LOWER_UNDERSCORE = listOf(
+            "a_",
+            "a_b",
+            "_abc",
+            "something_blah_123_other_stuff"
+        )
+
+        val INPUTS_UPPER_HYPHEN = listOf(
+            "A-B",
+            "A-B-C",
+            "A-",
+            "-A",
+            "ABC-DEF"
+        )
+
+        val INPUTS_CAPITAL_HYPHEN = listOf(
+            "Ab-Ab",
+            "Ac-",
+            "-Ab",
+            "Whatever-Something-Else"
+        )
+
+        val INPUTS_LOWER_HYPHEN = listOf(
+            "a-",
+            "a-b",
+            "-abc",
+            "123-abc-rew-34-whatever"
+        )
+
+        val INPUTS_UNKNOWN = listOf(
+            "abc-abc_abc",
+            "ABC_abc",
+            "",
+            "-_",
+            "!",
+            "ABC-abc",
+            "[]",
+            " ",
+            "A B C",
+            // Other special characters should show as unknown
+            "MaybeThough?",
+            " Nope",
+            "-not&this-either"
+        )
+
     }
 
 }
