@@ -1,6 +1,5 @@
 import groovy.lang.Closure
-import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinSoftwareComponentWithCoordinatesAndPublication
+import org.gradle.api.publish.maven.MavenPom
 
 buildscript {
     repositories {
@@ -12,7 +11,6 @@ plugins {
     kotlin("multiplatform") version "1.3.50"
     id("com.palantir.git-version") version "0.12.0-rc2"
     id("com.jfrog.bintray") version "1.8.4"
-    `maven`
     `maven-publish`
 }
 
@@ -95,37 +93,42 @@ tasks.withType<Jar> {
     }
 }
 
+val mavenPomConfiguration: ((MavenPom).() -> Unit) =
+    {
+        url.set("https://github.com/dotCipher/kase")
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+        developers {
+            developer {
+                id.set("dotcipher")
+                name.set("Cody Moore")
+                email.set("cody at dotcipher.io")
+            }
+        }
+        scm {
+            connection.set("scm:git:git://github.com/dotcipher/kase.git")
+            developerConnection.set("scm:git:ssh://github.com/dotcipher/kase.git")
+            url.set("https://github.com/dotCipher/kase")
+        }
+    }
+
+
 // Publication distribution configuration
 publishing {
     publications {
+        getByName<MavenPublication>("jvm") {
+            pom { mavenPomConfiguration.invoke(this) }
+        }
         create("maven", MavenPublication::class) {
             artifactId = project.name
             from(components["kotlin"])
             artifact(sourcesJar)
-            pom {
-                url.set("https://github.com/dotCipher/kase")
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("dotcipher")
-                        name.set("Cody Moore")
-                        email.set("cody at dotcipher.io")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:git://github.com/dotcipher/kase.git")
-                    developerConnection.set("scm:git:ssh://github.com/dotcipher/kase.git")
-                    url.set("https://github.com/dotCipher/kase")
-                }
-            }
+            pom { mavenPomConfiguration.invoke(this) }
         }
-
-
     }
 }
 
@@ -138,7 +141,7 @@ bintray {
         repo = "maven"
         name = "kase"
         setLicenses("Apache-2.0")
-        setPublications("maven")
+        setPublications("maven", "jvm")
         vcsUrl = "https://github.com/dotCipher/kase"
         issueTrackerUrl = "https://github.com/dotCipher/kase/issues"
         githubRepo = "dotcipher/kase"
@@ -152,4 +155,8 @@ bintray {
     }
     publish = true
     override = true
+}
+
+tasks.bintrayUpload.configure {
+    dependsOn(tasks.publishToMavenLocal)
 }
