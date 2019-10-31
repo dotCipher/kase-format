@@ -18,7 +18,8 @@ repositories {
     mavenCentral()
 }
 
-group = "io.dotcipher.kase"
+val artifactId = "kase"
+group = "io.dotcipher.$artifactId"
 // Use explicit cast for groovy call (see https://github.com/palantir/gradle-git-version/issues/105)
 version = (extensions.extraProperties.get("gitVersion") as? Closure<*>)?.call() ?: "dirty"
 
@@ -95,7 +96,7 @@ tasks.withType<Jar> {
 
 val mavenPomConfiguration: ((MavenPom).() -> Unit) =
     {
-        url.set("https://github.com/dotCipher/kase")
+        url.set("https://github.com/dotCipher/$artifactId")
         licenses {
             license {
                 name.set("The Apache License, Version 2.0")
@@ -104,7 +105,7 @@ val mavenPomConfiguration: ((MavenPom).() -> Unit) =
         }
         developers {
             developer {
-                id.set("dotcipher")
+                id.set("dotCipher")
                 name.set("Cody Moore")
                 email.set("cody at dotcipher.io")
             }
@@ -132,6 +133,16 @@ publishing {
     }
 }
 
+afterEvaluate { 
+    project.publishing.publications.all {
+        if (this is MavenPublication) {
+            if (this.name.contains("metadata")) {
+                this.artifactId = artifactId
+            }
+        }
+    }
+}
+
 // Bintray upload configuration
 bintray {
     user = System.getenv("BINTRAY_USER")
@@ -141,10 +152,10 @@ bintray {
         repo = "maven"
         name = "kase"
         setLicenses("Apache-2.0")
-        setPublications("maven", "jvm")
+        setPublications("maven", "jvm", "metadata")
         vcsUrl = "https://github.com/dotCipher/kase"
         issueTrackerUrl = "https://github.com/dotCipher/kase/issues"
-        githubRepo = "dotcipher/kase"
+        githubRepo = "dotCipher/kase"
         setLabels("kotlin", "library", "multiplatform")
         publicDownloadNumbers = true
         with(version) {
