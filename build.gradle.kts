@@ -97,7 +97,7 @@ tasks.withType<Jar> {
 
 val mavenPomConfiguration: ((MavenPom).() -> Unit) =
     {
-        url.set("https://github.com/dotCipher/${project.name}")
+        url.set("https://github.com/dotCipher/kase-format")
         licenses {
             license {
                 name.set("The Apache License, Version 2.0")
@@ -112,9 +112,9 @@ val mavenPomConfiguration: ((MavenPom).() -> Unit) =
             }
         }
         scm {
-            connection.set("scm:git:git://github.com/dotcipher/${project.name}.git")
-            developerConnection.set("scm:git:ssh://github.com/dotcipher/${project.name}.git")
-            url.set("https://github.com/dotCipher/${project.name}")
+            connection.set("scm:git:git://github.com/dotcipher/kase-format.git")
+            developerConnection.set("scm:git:ssh://github.com/dotcipher/kase-format.git")
+            url.set("https://github.com/dotCipher/kase-format")
         }
     }
 
@@ -154,9 +154,9 @@ bintray {
         name = project.name
         setLicenses("Apache-2.0")
         setPublications("maven", "jvm", "metadata")
-        vcsUrl = "https://github.com/dotCipher/${project.name}"
-        issueTrackerUrl = "https://github.com/dotCipher/${project.name}/issues"
-        githubRepo = "dotCipher/${project.name}{"
+        vcsUrl = "https://github.com/dotCipher/kase-format"
+        issueTrackerUrl = "https://github.com/dotCipher/kase-format/issues"
+        githubRepo = "dotCipher/kase-format"
         setLabels("kotlin", "library", "multiplatform")
         publicDownloadNumbers = true
         with(version) {
