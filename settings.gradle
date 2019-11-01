@@ -1,3 +1,3 @@
-rootProject.name = 'kase'
+rootProject.name = 'kase-format'
 
 enableFeaturePreview('GRADLE_METADATA')

@@ -21,17 +21,18 @@ repositories {
 group = "io.dotcipher.kase"
 // Use explicit cast for groovy call (see https://github.com/palantir/gradle-git-version/issues/105)
 version = (extensions.extraProperties.get("gitVersion") as? Closure<*>)?.call() ?: "dirty"
+description = "Multiplatform kotlin string case detection, conversion and formatting library"
 
 // Kotlin multiplatform configuration
 kotlin {
     jvm()
     // TODO
-//    js {
-//        browser {
-//        }
-//        nodejs {
-//        }
-//    }
+    js {
+        browser {
+        }
+        nodejs {
+        }
+    }
 //    macosX64()
     sourceSets {
         val commonMain by getting {
@@ -95,7 +96,7 @@ tasks.withType<Jar> {
 
 val mavenPomConfiguration: ((MavenPom).() -> Unit) =
     {
-        url.set("https://github.com/dotCipher/kase")
+        url.set("https://github.com/dotCipher/${project.name}")
         licenses {
             license {
                 name.set("The Apache License, Version 2.0")
@@ -104,15 +105,15 @@ val mavenPomConfiguration: ((MavenPom).() -> Unit) =
         }
         developers {
             developer {
-                id.set("dotcipher")
+                id.set("dotCipher")
                 name.set("Cody Moore")
                 email.set("cody at dotcipher.io")
             }
         }
         scm {
-            connection.set("scm:git:git://github.com/dotcipher/kase.git")
-            developerConnection.set("scm:git:ssh://github.com/dotcipher/kase.git")
-            url.set("https://github.com/dotCipher/kase")
+            connection.set("scm:git:git://github.com/dotcipher/${project.name}.git")
+            developerConnection.set("scm:git:ssh://github.com/dotcipher/${project.name}.git")
+            url.set("https://github.com/dotCipher/${project.name}")
         }
     }
 
@@ -139,12 +140,12 @@ bintray {
     with(pkg) {
         userOrg = "dotcipher"
         repo = "maven"
-        name = "kase"
+        name = project.name
         setLicenses("Apache-2.0")
         setPublications("maven", "jvm")
-        vcsUrl = "https://github.com/dotCipher/kase"
-        issueTrackerUrl = "https://github.com/dotCipher/kase/issues"
-        githubRepo = "dotcipher/kase"
+        vcsUrl = "https://github.com/dotCipher/${project.name}"
+        issueTrackerUrl = "https://github.com/dotCipher/${project.name}/issues"
+        githubRepo = "dotcipher/${project.name}"
         setLabels("kotlin", "library", "multiplatform")
         publicDownloadNumbers = true
         with(version) {
