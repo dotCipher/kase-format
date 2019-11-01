@@ -28,12 +28,12 @@ description = "Multiplatform kotlin string case detection, conversion and format
 kotlin {
     jvm()
     // TODO
-    js {
-        browser {
-        }
-        nodejs {
-        }
-    }
+//    js {
+//        browser {
+//        }
+//        nodejs {
+//        }
+//    }
 //    macosX64()
     sourceSets {
         val commonMain by getting {
