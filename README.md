@@ -8,7 +8,7 @@ _(Inspired by [Guava's `CaseFormat`](https://github.com/google/guava/wiki/String
 
 ## Setup
 
-### 1) Declare repository
+### Declare repository
 Include the following in your `respositories` block within the `build.gradle.kts`:
 ```kotlin
 repositories {
@@ -23,7 +23,7 @@ repositories {
     }   
 }
 ```
-### 2) Include dependency
+### Include dependency
 
 Include the following in your dependencies block (replacing `<version>` 
 with the latest release above:
@@ -37,6 +37,16 @@ dependencies {
 ```
 
 ## Usage
+
+`KaseFormat` is the main entrypoint for library usage, and it's defined as an `enum` of the following formats:
+- `LOWER_HYPHEN` (ie. `hello-world`)
+- `CAPITAL_HYPHEN` (ie. `Hello-World`)
+- `UPPER_HYPHEN` (ie. `HELLO-WORLD`)
+- `LOWER_UNDERSCORE` (ie. `hello_world`)
+- `CAPITAL_UNDERSCORE` (ie. `Hello_World`)
+- `UPPER_UNDERSCORE` (ie. `HELLO_WORLD`)
+- `LOWER_CAMEL` (ie. `helloWorld`)
+- `CAPITAL_CAMEL` (ie. `HelloWorld`)
 
 ### Conversion
 
