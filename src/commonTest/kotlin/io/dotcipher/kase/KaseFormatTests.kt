@@ -116,6 +116,12 @@ class KaseFormatTests {
             KaseFormat.LOWER_CAMEL, KaseFormat.CAPITAL_CAMEL)
     }
 
+    @Test
+    fun testConvert_LowerCamelToUpperHyphen() {
+        assertKaseConvert(INPUTS_LOWER_CAMEL_TO_UPPER_HYPEN,
+            KaseFormat.LOWER_CAMEL, KaseFormat.UPPER_HYPHEN)
+    }
+
     companion object {
         val INPUTS_CAPITAL_CAMEL = listOf(
             "EasyPeasy",
@@ -146,6 +152,11 @@ class KaseFormatTests {
             "with123Numbers" to "With123Numbers",
             "what" to "What",
             "some123thingNumbered" to "Some123thingNumbered"
+        )
+        val INPUTS_LOWER_CAMEL_TO_UPPER_HYPEN = mapOf(
+            "abcSomethingElse" to "ABC-SOMETHING-ELSE",
+            "with123Numbers" to "WITH123-NUMBERS",
+            "some123thingNumbered" to "SOME123THING-NUMBERED"
         )
 
         val INPUTS_UPPER_UNDERSCORE = listOf(
