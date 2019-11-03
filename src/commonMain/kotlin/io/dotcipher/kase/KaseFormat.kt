@@ -258,10 +258,10 @@ enum class KaseFormat(
         val string = StringBuilder()
         val split = splitWords(input, this)
         split.forEachIndexed { wordIndex, word ->
+            string.append(format.normalizeWord(word, wordIndex))
             if (wordIndex < split.size - 1) {
                 string.append(format.delimiter)
             }
-            string.append(format.normalizeWord(word, wordIndex))
         }
         return string.toString()
     }

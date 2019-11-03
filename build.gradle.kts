@@ -22,7 +22,7 @@ val artifactId = "kase-format"
 group = "io.dotcipher.kase"
 // Use explicit cast for groovy call (see https://github.com/palantir/gradle-git-version/issues/105)
 version = (extensions.extraProperties.get("gitVersion") as? Closure<*>)?.call() ?: "dirty"
-description = "Multiplatform kotlin string case detection, conversion and formatting library"
+description = "Multiplatform kotlin string case conversion and detection library"
 
 // Kotlin multiplatform configuration
 kotlin {
