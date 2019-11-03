@@ -4,6 +4,8 @@
 
 Multiplatform kotlin string case conversion and detection library.
 
+![examples](gifs/examples.gif)
+
 _(Inspired by [Guava's `CaseFormat`](https://github.com/google/guava/wiki/StringsExplained#caseformat))_
 
 ## Setup
