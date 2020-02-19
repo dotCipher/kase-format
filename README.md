@@ -1,6 +1,8 @@
 # KaseFormat
-[ ![Download](https://api.bintray.com/packages/dotcipher/maven/kase-format/images/download.svg) ](https://bintray.com/dotcipher/maven/kase-format/_latestVersion)
+[![Download](https://api.bintray.com/packages/dotcipher/maven/kase-format/images/download.svg) ](https://bintray.com/dotcipher/maven/kase-format/_latestVersion)
 [![CircleCI](https://circleci.com/gh/dotCipher/kase-format/tree/master.svg?style=shield)](https://circleci.com/gh/dotCipher/kase-format/tree/master)
+[![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin)
+
 
 Multiplatform kotlin string case conversion and detection library.
 
