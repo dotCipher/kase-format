@@ -8,7 +8,7 @@ buildscript {
 }
 
 plugins {
-    kotlin("multiplatform") version "1.3.50"
+    kotlin("multiplatform") version "1.4.10"
     id("com.palantir.git-version") version "0.12.0-rc2"
     id("com.jfrog.bintray") version "1.8.4"
     `maven-publish`
@@ -36,26 +36,14 @@ kotlin {
 //    }
 //    macosX64()
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-common"))
-            }
-        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        // Delegate to JVM target for tests
-        val jvmMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-jdk8"))
-            }
-        }
         val jvmTest by getting {
             dependencies {
-                implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
             }
         }
