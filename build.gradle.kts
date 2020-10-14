@@ -27,14 +27,6 @@ description = "Multiplatform kotlin string case conversion and detection library
 // Kotlin multiplatform configuration
 kotlin {
     jvm()
-    // TODO
-//    js {
-//        browser {
-//        }
-//        nodejs {
-//        }
-//    }
-//    macosX64()
     sourceSets {
         val commonTest by getting {
             dependencies {
@@ -49,19 +41,6 @@ kotlin {
         }
     }
 }
-
-//tasks.create("show") {
-//    doLast {
-//        components.forEach {
-//            it as KotlinSoftwareComponentWithCoordinatesAndPublication
-//            it.variants.forEach { variant ->
-//                variant as AbstractKotlinTarget
-//                variant.
-//                println(variant)
-//            }
-//        }
-//    }
-//}
 
 val stubSources = tasks.create("stubSources", Jar::class) {
     archiveClassifier.set("sources")
