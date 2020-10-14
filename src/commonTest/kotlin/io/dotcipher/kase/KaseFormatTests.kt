@@ -156,7 +156,8 @@ class KaseFormatTests {
         val INPUTS_LOWER_CAMEL_TO_UPPER_HYPEN = mapOf(
             "abcSomethingElse" to "ABC-SOMETHING-ELSE",
             "with123Numbers" to "WITH123-NUMBERS",
-            "some123thingNumbered" to "SOME123THING-NUMBERED"
+            "some123thingNumbered" to "SOME123THING-NUMBERED",
+            "otherThing" to "OTHER-THING"
         )
 
         val INPUTS_UPPER_UNDERSCORE = listOf(
@@ -164,7 +165,8 @@ class KaseFormatTests {
             "_A",
             "ABC_DEF",
             "123_ABC_WITH_THINGS",
-            "ABC"
+            "ABC",
+            "123ABC"
         )
 
         val INPUTS_CAPITAL_UNDERSCORE = listOf(
