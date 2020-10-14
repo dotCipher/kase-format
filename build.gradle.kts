@@ -9,8 +9,8 @@ buildscript {
 
 plugins {
     kotlin("multiplatform") version "1.4.10"
-    id("com.palantir.git-version") version "0.12.0-rc2"
-    id("com.jfrog.bintray") version "1.8.4"
+    id("com.palantir.git-version") version "0.12.3"
+    id("com.jfrog.bintray") version "1.8.5"
     `maven-publish`
 }
 
